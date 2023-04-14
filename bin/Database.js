@@ -6,4 +6,4 @@ const Database = async () => {
 }
 
 module.exports = Database().then(console.log(`Successfully connected to database`))
-    .catch(error => console.log(`Could not connect to database. Error:\n${error}`));
+    .catch(error => console.log(error));
