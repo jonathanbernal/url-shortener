@@ -23,12 +23,8 @@ app.get('/', function(req, res) {
 
 app.post('/api/shorturl/', async function(req, res) {
   const urlStringToCheck = req.body.url;
-  const record = new URLDocument({
-    original_url: urlStringToCheck,
-    short_url: 1
-  });
-
   let URLDocumentFound = null;
+  
   if (urlValidator(urlStringToCheck)) {
     URLDocumentFound = await URLDocument.findOneByURL(urlStringToCheck);
 
@@ -63,5 +59,21 @@ app.post('/api/shorturl/', async function(req, res) {
     res.json({'error': 'invalid url'});
   }
 });
+
+app.get('/api/shorturl/:short_url', async (req, res) => {
+  // the request URL is a string containing an integer value
+  const requestURL = req.params.short_url;
+  let URLDocumentFound = null;
+  
+  if(!Number.isNaN(parseInt(requestURL))) {
+    URLDocumentFound = await URLDocument.findOneByShortURL(requestURL);
+
+    if(URLDocumentFound) {
+      res.redirect(URLDocumentFound.original_url);
+    }
+  }
+  // short url could not be found
+  res.json({error: 'invalid url'});
+})
 
 app.listen(port, ()=> console.log(`Listening on port ${port}`));
