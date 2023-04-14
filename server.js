@@ -6,8 +6,8 @@ const app = express();
 // Basic Configuration
 const port = process.env.PORT || 3000;
 
+// Set up middleware
 app.use(cors());
-
 app.use('/public', express.static(`${process.cwd()}/public`));
 
 app.get('/', function(req, res) {
@@ -19,6 +19,4 @@ app.get('/api/hello', function(req, res) {
   res.json({ greeting: 'hello API' });
 });
 
-app.listen(port, function() {
-  console.log(`Listening on port ${port}`);
-});
+app.listen(port, ()=> console.log(`Listening on port ${port}`));
